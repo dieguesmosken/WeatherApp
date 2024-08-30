@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Previsão do Tempo</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <!-- meu css  -->
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="main.css" />
+    <script defer src="script.js"></script>
   </head>
-  
+
   <body>
     <header>
       <div class="container">
@@ -17,29 +18,45 @@
         <nav>
           <ul>
             <li>
-              <i class="fa-solid fa-house fa-sm"></i>
-              <a href="https://dieguesmosken.github.io">Página Inicial</a>
+              <i class="fa-solid fa-house fa-lg"></i>
+              <a href="https://dieguesmosken.github.io">Pagina Inicial</a>
             </li>
             <li>
-              <i class="fa-brands fa-linkedin fa-sm"></i>
-              <a href="https://www.linkedin.com/in/dieguesmosken/">Contato</a>
+              <i class="fa-brands fa-linkedin fa-lg"></i>
+              <a href="https://www.linkedin.com/in/dieguesmosken/">Linkedin</a>
             </li>
           </ul>
         </nav>
+        <div class="search-container">
+          <input
+            type="text"
+            id="city"
+            class="input-city"
+            placeholder="Digite o nome da cidade"
+          />
+          <button onclick="search()" class="input-submit">Pesquisar</button>
+        </div>
       </div>
     </header>
-  
+
     <!-- Div para exibir a previsão do tempo -->
     <div id="weather"></div>
-  
-    <script src="script.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <footer>
-        <p>Copyright
-          <i class="fa-brands fa-github fa-sm"></i>
-          <a href="https://github.com/dieguesmosken" target="_blank"> @dieguesmosken </a>2024
-        </p>
+      <p>
+        Copyright
+        <i class="fa-brands fa-github fa-sm"></i>
+        <a href="https://github.com/dieguesmosken" target="_blank">
+          @dieguesmosken </a
+        >2024
+      </p>
     </footer>
-    <script src="https://kit.fontawesome.com/8f7ed06d3d.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/8f7ed06d3d.js"
+      crossorigin="anonymous"
+    ></script>
   </body>
-  </html>
-  
+</html>
