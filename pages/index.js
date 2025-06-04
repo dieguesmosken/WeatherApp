@@ -2,6 +2,7 @@ import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import LocationInput from '../components/LocationInput';
 import WeatherDisplay from '../components/WeatherDisplay';
+import MapDisplay from '../components/MapDisplay'; // Import MapDisplay
 import FavoritesList from '../components/FavoritesList'; // Import FavoritesList
 import { useState, useEffect } from 'react'; // Import useEffect
 import { useI18n } from '../lib/i18n/i18nContext';
@@ -104,6 +105,14 @@ export default function Home() {
             data={weatherData}
             onAddToFavorites={handleAddFavorite}
             isFavorited={isCityFavorited(weatherData.name)}
+          />
+        )}
+
+        {weatherData && weatherData.coord && (
+          <MapDisplay
+            latitude={weatherData.coord.lat}
+            longitude={weatherData.coord.lon}
+            zoom={10}
           />
         )}
 
