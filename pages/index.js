@@ -1,12 +1,18 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
+import dynamic from 'next/dynamic'; // Import dynamic
 import LocationInput from '../components/LocationInput';
 import WeatherDisplay from '../components/WeatherDisplay';
-import MapDisplay from '../components/MapDisplay'; // Import MapDisplay
+// import MapDisplay from '../components/MapDisplay'; // Will be dynamically imported
 import FavoritesList from '../components/FavoritesList'; // Import FavoritesList
 import { useState, useEffect } from 'react'; // Import useEffect
 import { useI18n } from '../lib/i18n/i18nContext';
 import { getFavoritesFromStorage, saveFavoritesToStorage } from '../lib/favorites/localStorage'; // Import LocalStorage utils
+
+const MapDisplay = dynamic(() => import('../components/MapDisplay'), {
+  ssr: false,
+  loading: () => <p>Loading map...</p>
+});
 
 export default function Home() {
   const { t, language } = useI18n();
@@ -100,21 +106,27 @@ export default function Home() {
         {error && <p className={styles.errorMessage}>{error}</p>}
         {infoMessage && <p className={styles.infoMessage}>{infoMessage}</p>}
 
-        {weatherData && (
-          <WeatherDisplay
-            data={weatherData}
-            onAddToFavorites={handleAddFavorite}
-            isFavorited={isCityFavorited(weatherData.name)}
-          />
-        )}
+        <div className={styles.weatherMapContainer}>
+          {weatherData && (
+            <div className={styles.weatherDisplayWrapper}> {/* Added wrapper for WeatherDisplay */}
+              <WeatherDisplay
+                data={weatherData}
+                onAddToFavorites={handleAddFavorite}
+                isFavorited={isCityFavorited(weatherData.name)}
+              />
+            </div>
+          )}
 
-        {weatherData && weatherData.coord && (
-          <MapDisplay
-            latitude={weatherData.coord.lat}
-            longitude={weatherData.coord.lon}
-            zoom={10}
-          />
-        )}
+          {weatherData && weatherData.coord && (
+            <div className={styles.mapDisplayWrapper}> {/* Added wrapper for MapDisplay */}
+              <MapDisplay
+                latitude={weatherData.coord.lat}
+                longitude={weatherData.coord.lon}
+                zoom={10}
+              />
+            </div>
+          )}
+        </div>
 
         <FavoritesList
           favorites={favorites}

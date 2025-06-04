@@ -40,3 +40,14 @@ a {
     color-scheme: dark;
   }
 }
+
+/* Added for Header/Footer layout */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1; /* Allows this area to grow and push footer down */
+}
