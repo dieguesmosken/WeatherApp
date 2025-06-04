@@ -1,43 +1,40 @@
-<!-- /**
- * This file contains the README for the WeatherApp project.
- * It provides information about the project, its purpose, and how to use it.
- */ -->
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
 
-<!-- Este arquivo contém o README do projeto WeatherApp.
-Ele fornece informações sobre o projeto, seu propósito e como utilizá-lo. -->
-## Como utilizar o WeatherApp
+## Getting Started
 
-O WeatherApp é um projeto que permite obter informações sobre o clima de diferentes cidades. Para utilizá-lo, siga as instruções abaixo:
+First, run the development server:
 
-1. Clone este repositório em sua máquina local.
-2. Certifique-se de ter o Node.js instalado em seu sistema.
-3. Abra o terminal e navegue até o diretório raiz do projeto.
-4. Execute o comando `npm install` para instalar as dependências do projeto.
-5. Após a instalação das dependências, execute o comando `npm start` para iniciar o aplicativo.
-6. Acesse o aplicativo em seu navegador, digitando `http://localhost:3000` na barra de endereços.
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-## Funcionalidades
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-O WeatherApp oferece as seguintes funcionalidades:
+You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-- Pesquisa de clima por cidade: digite o nome da cidade desejada na barra de pesquisa e pressione Enter para obter informações detalhadas sobre o clima atual.
-- Previsão do tempo: visualize a previsão do tempo para os próximos dias, incluindo temperatura máxima e mínima, umidade e condições climáticas.
-- Favoritos: adicione suas cidades favoritas à lista de favoritos para acessá-las facilmente.
+[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
-## Contribuição
+The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
 
-Se você deseja contribuir para o desenvolvimento do WeatherApp, siga as etapas abaixo:
+This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-1. Faça um fork deste repositório.
-2. Crie uma nova branch com a sua contribuição: `git checkout -b minha-contribuicao`.
-3. Faça as alterações desejadas no código.
-4. Certifique-se de que os testes estão passando: `npm test`.
-5. Faça o commit das suas alterações: `git commit -m "Minha contribuição"`.
-6. Faça o push para o seu fork: `git push origin minha-contribuicao`.
-7. Abra um pull request neste repositório.
+## Learn More
 
-## Licença
+To learn more about Next.js, take a look at the following resources:
 
-Este projeto está licenciado sob a licença MIT. Consulte o arquivo `LICENSE` para obter mais informações.
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
 
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
