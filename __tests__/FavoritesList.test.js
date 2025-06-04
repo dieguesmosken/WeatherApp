@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import FavoritesList from '../FavoritesList';
-import { I18nProvider } from '../../lib/i18n/i18nContext'; // Adjusted path
+import FavoritesList from '../components/FavoritesList';
+import { I18nProvider } from '../lib/i18n/i18nContext'; // Adjusted path
 
 const renderWithI18n = (ui, { locale = 'pt', ...options } = {}) => {
   return render(<I18nProvider defaultLang={locale}>{ui}</I18nProvider>, options);

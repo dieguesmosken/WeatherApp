@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import WeatherDisplay from '../WeatherDisplay';
-import { I18nProvider } from '../../lib/i18n/i18nContext'; // Adjusted path
+import WeatherDisplay from '../components/WeatherDisplay';
+import { I18nProvider } from '../lib/i18n/i18nContext'; // Adjusted path
 
 const renderWithI18n = (ui, { locale = 'pt', ...options } = {}) => {
   return render(<I18nProvider defaultLang={locale}>{ui}</I18nProvider>, options);
