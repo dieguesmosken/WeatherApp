@@ -2,61 +2,116 @@ import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import LocationInput from '../components/LocationInput';
 import WeatherDisplay from '../components/WeatherDisplay';
-import { useState } from 'react';
+import FavoritesList from '../components/FavoritesList'; // Import FavoritesList
+import { useState, useEffect } from 'react'; // Import useEffect
+import { useI18n } from '../lib/i18n/i18nContext';
+import { getFavoritesFromStorage, saveFavoritesToStorage } from '../lib/favorites/localStorage'; // Import LocalStorage utils
 
 export default function Home() {
+  const { t, language } = useI18n();
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
+  const [favorites, setFavorites] = useState([]);
+  const [infoMessage, setInfoMessage] = useState(''); // For messages like "City already favorited"
+
+  // Load favorites from localStorage on initial render
+  useEffect(() => {
+    setFavorites(getFavoritesFromStorage());
+  }, []);
 
   const handleLocationSubmit = async (location) => {
     setError(null);
-    setWeatherData(null);
+    setInfoMessage('');
+    // setWeatherData(null); // Keep previous data while new one loads? Or clear? Clearing for now.
     const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric`;
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric&lang=${language}`;
 
     if (!apiKey) {
-      setError("API key is missing. Please check your environment configuration.");
+      setError(t('apiKeyMissing'));
       return;
     }
 
     try {
       const response = await fetch(url);
       if (!response.ok) {
-        if (response.status === 401) {
-          setError("Invalid API key. Please check your .env.local file.");
-        } else if (response.status === 404) {
-          setError(`City not found: ${location}`);
-        } else {
-          setError(`Error fetching weather data: ${response.statusText}`);
-        }
+        const responseData = await response.json().catch(() => ({}));
+        if (response.status === 401) setError(t('invalidApiKey'));
+        else if (response.status === 404) setError(t('cityNotFound', { location }));
+        else setError(`${t('errorFetchingData')}: ${responseData.message || response.statusText}`);
+        setWeatherData(null); // Clear weather data on error
         return;
       }
       const data = await response.json();
       setWeatherData(data);
     } catch (err) {
       console.error("Fetch error:", err);
-      setError('Failed to fetch weather data. Check console for details.');
+      setError(t('failedToFetch'));
+      setWeatherData(null); // Clear weather data on error
     }
+  };
+
+  const handleAddFavorite = (city) => {
+    if (!city || city === t('unknownCity')) return;
+    if (favorites.includes(city)) {
+      setInfoMessage(t('cityAlreadyFavorited'));
+      setTimeout(() => setInfoMessage(''), 3000); // Clear message after 3s
+      return;
+    }
+    const newFavorites = [...favorites, city];
+    setFavorites(newFavorites);
+    saveFavoritesToStorage(newFavorites);
+    setInfoMessage(''); // Clear any previous message
+  };
+
+  const handleRemoveFavorite = (cityToRemove) => {
+    const newFavorites = favorites.filter(city => city !== cityToRemove);
+    setFavorites(newFavorites);
+    saveFavoritesToStorage(newFavorites);
+  };
+
+  const handleSelectFavorite = (city) => {
+    // Trigger a new weather search for the selected favorite city
+    const locationInput = document.querySelector(`.${styles.locationInput}`); // A bit hacky way to set input
+    if(locationInput) locationInput.value = city; // Set input value for visual feedback
+    handleLocationSubmit(city);
+  };
+
+  const isCityFavorited = (cityName) => {
+    if (!weatherData || !weatherData.name) return false;
+    return favorites.includes(weatherData.name);
   };
 
   return (
     <div className={styles.container}>
       <Head>
-        <title>Weather App</title>
-        <meta name="description" content="Weather app built with Next.js" />
+        <title>{t('weatherForecaster')}</title>
+        <meta name="description" content={t('weatherForecaster')} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Weather Forecaster
+          {t('weatherForecaster')}
         </h1>
 
         <LocationInput onLocationSubmit={handleLocationSubmit} />
 
         {error && <p className={styles.errorMessage}>{error}</p>}
+        {infoMessage && <p className={styles.infoMessage}>{infoMessage}</p>}
 
-        <WeatherDisplay data={weatherData} />
+        {weatherData && (
+          <WeatherDisplay
+            data={weatherData}
+            onAddToFavorites={handleAddFavorite}
+            isFavorited={isCityFavorited(weatherData.name)}
+          />
+        )}
+
+        <FavoritesList
+          favorites={favorites}
+          onSelectFavorite={handleSelectFavorite}
+          onRemoveFavorite={handleRemoveFavorite}
+        />
       </main>
     </div>
   );
