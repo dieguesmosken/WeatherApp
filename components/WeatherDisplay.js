@@ -45,10 +45,10 @@ export default function WeatherDisplay({ data, onAddToFavorites, isFavorited }) 
   const feelsLike = data.main ? data.main.feels_like : t('na');
   const windSpeed = data.wind ? data.wind.speed : t('na');
   const windDirection = data.wind ? formatWindDirection(data.wind.deg, t) : t('na');
-  const pressure = data.main ? data.main.pressure : t('na');
-  const visibility = data.visibility !== undefined ? data.visibility : t('na');
-  const sunriseTime = data.sys && data.sys.sunrise ? formatTime(data.sys.sunrise, data.timezone, language) : t('na');
-  const sunsetTime = data.sys && data.sys.sunset ? formatTime(data.sys.sunset, data.timezone, language) : t('na');
+  const pressure = data.main?.pressure ?? t('na');
+  const visibility = data.visibility ?? t('na');
+  const sunriseTime = data.sys?.sunrise ? formatTime(data.sys.sunrise, data.timezone, language) : t('na');
+  const sunsetTime = data.sys?.sunset ? formatTime(data.sys.sunset, data.timezone, language) : t('na');
 
   return (
     <div className={styles.weatherDisplayContainer}>
