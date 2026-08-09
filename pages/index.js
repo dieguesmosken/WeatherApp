@@ -29,7 +29,6 @@ export default function Home() {
   const handleLocationSubmit = async (location) => {
     setError(null);
     setInfoMessage('');
-    // setWeatherData(null); // Keep previous data while new one loads? Or clear? Clearing for now.
     const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric&lang=${language}`;
 
