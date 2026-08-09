@@ -2,9 +2,8 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import LocationInput from '../components/LocationInput';
-import { I18nProvider } from '../lib/i18n/i18nContext'; // Adjusted path
+import { I18nProvider } from '../lib/i18n/i18nContext';
 
-// Helper to render with I18nProvider
 const renderWithI18n = (ui, { locale = 'pt', ...options } = {}) => {
   return render(<I18nProvider defaultLang={locale}>{ui}</I18nProvider>, options);
 };
@@ -40,7 +39,6 @@ describe('LocationInput', () => {
     renderWithI18n(<LocationInput onLocationSubmit={mockSubmit} />);
     const button = screen.getByRole('button', { name: /Buscar Clima/i });
 
-    // Test with empty input
     fireEvent.click(button);
     expect(mockSubmit).not.toHaveBeenCalled();
 
