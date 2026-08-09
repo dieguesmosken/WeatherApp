@@ -16,20 +16,20 @@ const MapDisplay = dynamic(() => import('../components/MapDisplay'), {
 
 export default function Home() {
   const { t, language } = useI18n();
+  const [inputValue, setInputValue] = useState('');
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState(new Set());
   const [infoMessage, setInfoMessage] = useState(''); // For messages like "City already favorited"
 
   // Load favorites from localStorage on initial render
   useEffect(() => {
-    setFavorites(getFavoritesFromStorage());
+    setFavorites(new Set(getFavoritesFromStorage()));
   }, []);
 
   const handleLocationSubmit = async (location) => {
     setError(null);
     setInfoMessage('');
-    // setWeatherData(null); // Keep previous data while new one loads? Or clear? Clearing for now.
     const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric&lang=${language}`;
 
@@ -59,33 +59,33 @@ export default function Home() {
 
   const handleAddFavorite = (city) => {
     if (!city || city === t('unknownCity')) return;
-    if (favorites.includes(city)) {
+    if (favorites.has(city)) {
       setInfoMessage(t('cityAlreadyFavorited'));
       setTimeout(() => setInfoMessage(''), 3000); // Clear message after 3s
       return;
     }
-    const newFavorites = [...favorites, city];
+    const newFavorites = new Set(favorites).add(city);
     setFavorites(newFavorites);
-    saveFavoritesToStorage(newFavorites);
+    saveFavoritesToStorage(Array.from(newFavorites));
     setInfoMessage(''); // Clear any previous message
   };
 
   const handleRemoveFavorite = (cityToRemove) => {
-    const newFavorites = favorites.filter(city => city !== cityToRemove);
+    const newFavorites = new Set(favorites);
+    newFavorites.delete(cityToRemove);
     setFavorites(newFavorites);
-    saveFavoritesToStorage(newFavorites);
+    saveFavoritesToStorage(Array.from(newFavorites));
   };
 
   const handleSelectFavorite = (city) => {
     // Trigger a new weather search for the selected favorite city
-    const locationInput = document.querySelector(`.${styles.locationInput}`); // A bit hacky way to set input
-    if(locationInput) locationInput.value = city; // Set input value for visual feedback
+    setInputValue(city);
     handleLocationSubmit(city);
   };
 
   const isCityFavorited = (cityName) => {
     if (!weatherData || !weatherData.name) return false;
-    return favorites.includes(weatherData.name);
+    return favorites.has(weatherData.name);
   };
 
   return (
@@ -101,7 +101,11 @@ export default function Home() {
           {t('weatherForecaster')}
         </h1>
 
-        <LocationInput onLocationSubmit={handleLocationSubmit} />
+        <LocationInput
+          value={inputValue}
+          onChange={setInputValue}
+          onLocationSubmit={handleLocationSubmit}
+        />
 
         {error && <p className={styles.errorMessage}>{error}</p>}
         {infoMessage && <p className={styles.infoMessage}>{infoMessage}</p>}
@@ -129,7 +133,7 @@ export default function Home() {
         </div>
 
         <FavoritesList
-          favorites={favorites}
+          favorites={Array.from(favorites)}
           onSelectFavorite={handleSelectFavorite}
           onRemoveFavorite={handleRemoveFavorite}
         />

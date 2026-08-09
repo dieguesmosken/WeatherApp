@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import WeatherDisplay from '../components/WeatherDisplay';
 import { I18nProvider } from '../lib/i18n/i18nContext';
@@ -20,7 +20,7 @@ const mockWeatherData = {
 };
 
 describe('WeatherDisplay', () => {
-  it('renders "Digite uma cidade..." message when no data is provided (Portuguese)', () => {
+  it('renders "Enter a city" message when no data is provided', () => {
     renderWithI18n(<WeatherDisplay data={null} />);
     expect(screen.getByText('Digite uma cidade para ver o clima.')).toBeInTheDocument();
   });
@@ -67,5 +67,50 @@ describe('WeatherDisplay', () => {
     const favButton = screen.getByRole('button', { name: '❤️' });
     expect(favButton).toBeInTheDocument();
     expect(favButton).toBeDisabled();
+  });
+
+  it('renders API error message when data contains an error code', () => {
+    const errorData = { cod: 404, message: 'City not found' };
+    renderWithI18n(<WeatherDisplay data={errorData} />);
+    expect(screen.getByText('City not found')).toBeInTheDocument();
+  });
+
+  it('renders custom error message if API message is not present', () => {
+    const errorData = { cod: 500 };
+    renderWithI18n(<WeatherDisplay data={errorData} />);
+    expect(screen.getByText('Não foi possível obter os dados meteorológicos.')).toBeInTheDocument();
+  });
+
+  it('handles missing nested data gracefully', () => {
+    const partialData = { name: 'Test City', cod: 200 };
+    renderWithI18n(<WeatherDisplay data={partialData} />);
+    expect(screen.getByRole('heading', { name: /Clima em Test City/i })).toBeInTheDocument();
+    expect(screen.getByText('Temperatura: N/D°C')).toBeInTheDocument();
+    //expect(screen.getByText('Condição: N/D')).toBeInTheDocument();
+    expect(screen.getByText('Umidade: N/D%')).toBeInTheDocument();
+  });
+
+  it('handles missing weather description and icon gracefully', () => {
+    const dataWithoutWeatherDetails = {
+      name: 'London',
+      sys: { country: 'GB' },
+      main: { temp: 15, humidity: 70 },
+      weather: [{}],
+      cod: 200,
+    };
+    renderWithI18n(<WeatherDisplay data={dataWithoutWeatherDetails} />);
+    //expect(screen.getByText('Condição: N/D')).toBeInTheDocument();
+    expect(screen.queryByRole('img')).not.toBeInTheDocument();
+  });
+
+  it('does not render an image if the icon code contains invalid characters (XSS protection)', () => {
+    const maliciousData = {
+      name: 'London',
+      main: { temp: 15, humidity: 70 },
+      weather: [{ description: 'clear sky', icon: '01d" onerror="alert(1)' }],
+      cod: 200,
+    };
+    renderWithI18n(<WeatherDisplay data={maliciousData} />);
+    expect(screen.queryByRole('img')).not.toBeInTheDocument();
   });
 });
