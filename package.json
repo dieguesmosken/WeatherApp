@@ -18,9 +18,11 @@
     "react-leaflet": "^4.2.1"
   },
   "devDependencies": {
-    "babel-jest": "^30.4.1",
+    "@swc/core": "^1.15.47",
+    "@swc/jest": "^0.2.39",
     "identity-obj-proxy": "^3.0.0",
     "ignore-loader": "^0.1.2",
+    "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1"
   }
 }

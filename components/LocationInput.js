@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from '../styles/Home.module.css';
 import { useI18n } from '../lib/i18n/i18nContext'; // Import useI18n
 
-export default function LocationInput({ onLocationSubmit }) {
+export default function LocationInput({ value, onChange, onLocationSubmit }) {
   const { t } = useI18n(); // Get t function
-  const [location, setLocation] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (location.trim()) {
-      onLocationSubmit(location.trim());
+    if (value && value.trim()) {
+      onLocationSubmit(value.trim());
     }
   };
 
@@ -17,8 +16,8 @@ export default function LocationInput({ onLocationSubmit }) {
     <form onSubmit={handleSubmit} className={styles.locationForm}>
       <input
         type="text"
-        value={location}
-        onChange={(e) => setLocation(e.target.value)}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         placeholder={t('enterCityName')} // Use t function
         className={styles.locationInput}
       />
