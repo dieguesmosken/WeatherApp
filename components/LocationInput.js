@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import styles from '../styles/Home.module.css';
 import { useI18n } from '../lib/i18n/i18nContext'; // Import useI18n
 
-export default function LocationInput({ onLocationSubmit }) {
+const LocationInput = forwardRef(({ onLocationSubmit }, ref) => {
   const { t } = useI18n(); // Get t function
   const [location, setLocation] = useState('');
+
+  useImperativeHandle(ref, () => ({
+    setLocation: (newLocation) => {
+      setLocation(newLocation);
+    }
+  }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,4 +33,8 @@ export default function LocationInput({ onLocationSubmit }) {
       </button>
     </form>
   );
-}
+});
+
+LocationInput.displayName = 'LocationInput';
+
+export default LocationInput;
