@@ -32,8 +32,8 @@ export default function WeatherDisplay({ data, onAddToFavorites, isFavorited }) 
   const cityName = data.name || t('unknownCity');
   const temperature = data.main ? data.main.temp : t('na');
   const humidity = data.main ? data.main.humidity : t('na');
-  const weatherCondition = data.weather && data.weather[0] ? data.weather[0].description : t('na');
-  const weatherIcon = data.weather && data.weather[0] ? `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png` : null;
+  const weatherCondition = data.weather && data.weather[0] && data.weather[0].description ? data.weather[0].description : t('na');
+  const weatherIcon = data.weather && data.weather[0] && data.weather[0].icon ? `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png` : null;
   const feelsLike = data.main ? data.main.feels_like : t('na');
   const windSpeed = data.wind ? data.wind.speed : t('na');
   const windDirection = data.wind ? formatWindDirection(data.wind.deg, t) : t('na');
