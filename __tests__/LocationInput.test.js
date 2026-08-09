@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import LocationInput from '../components/LocationInput';
-import { I18nProvider } from '../lib/i18n/i18nContext'; // Adjusted path
+import { I18nProvider } from '../lib/i18n/i18nContext';
 
 // Helper to render with I18nProvider
 const renderWithI18n = (ui, { locale = 'pt', ...options } = {}) => {
