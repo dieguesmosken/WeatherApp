@@ -5,7 +5,7 @@ import LocationInput from '../components/LocationInput';
 import WeatherDisplay from '../components/WeatherDisplay';
 // import MapDisplay from '../components/MapDisplay'; // Will be dynamically imported
 import FavoritesList from '../components/FavoritesList'; // Import FavoritesList
-import { useState, useEffect } from 'react'; // Import useEffect
+import { useState, useEffect, useRef } from 'react'; // Import useEffect and useRef
 import { useI18n } from '../lib/i18n/i18nContext';
 import { getFavoritesFromStorage, saveFavoritesToStorage } from '../lib/favorites/localStorage'; // Import LocalStorage utils
 
@@ -20,6 +20,7 @@ export default function Home() {
   const [error, setError] = useState(null);
   const [favorites, setFavorites] = useState([]);
   const [infoMessage, setInfoMessage] = useState(''); // For messages like "City already favorited"
+  const locationInputRef = useRef(null);
 
   // Load favorites from localStorage on initial render
   useEffect(() => {
@@ -78,8 +79,9 @@ export default function Home() {
 
   const handleSelectFavorite = (city) => {
     // Trigger a new weather search for the selected favorite city
-    const locationInput = document.querySelector(`.${styles.locationInput}`); // A bit hacky way to set input
-    if(locationInput) locationInput.value = city; // Set input value for visual feedback
+    if (locationInputRef.current) {
+      locationInputRef.current.setLocation(city);
+    }
     handleLocationSubmit(city);
   };
 
@@ -101,7 +103,7 @@ export default function Home() {
           {t('weatherForecaster')}
         </h1>
 
-        <LocationInput onLocationSubmit={handleLocationSubmit} />
+        <LocationInput onLocationSubmit={handleLocationSubmit} ref={locationInputRef} />
 
         {error && <p className={styles.errorMessage}>{error}</p>}
         {infoMessage && <p className={styles.infoMessage}>{infoMessage}</p>}
