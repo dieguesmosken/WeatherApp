@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import WeatherDisplay from '../components/WeatherDisplay';
 import { I18nProvider } from '../lib/i18n/i18nContext';
@@ -20,7 +20,7 @@ const mockWeatherData = {
 };
 
 describe('WeatherDisplay', () => {
-  it('renders "Digite uma cidade..." message when no data is provided (Portuguese)', () => {
+  it('renders "Enter a city" message when no data is provided', () => {
     renderWithI18n(<WeatherDisplay data={null} />);
     expect(screen.getByText('Digite uma cidade para ver o clima.')).toBeInTheDocument();
   });
@@ -90,9 +90,10 @@ describe('WeatherDisplay', () => {
     expect(screen.getByText('Umidade: N/D%')).toBeInTheDocument();
   });
 
-   it('handles missing weather description and icon gracefully', () => {
+  it('handles missing weather description and icon gracefully', () => {
     const dataWithoutWeatherDetails = {
       name: 'London',
+      sys: { country: 'GB' },
       main: { temp: 15, humidity: 70 },
       weather: [{}],
       cod: 200,
