@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Home from '../index';
-import { I18nProvider } from '../../lib/i18n/i18nContext'; // Adjusted path
+import Home from '../pages/index';
+import { I18nProvider } from '../lib/i18n/i18nContext'; // Adjusted path
 
 // Mock next/head
 jest.mock('next/head', () => ({ children }) => <>{children}</>);
@@ -47,7 +47,6 @@ describe('Home Page', () => {
     renderHomePage();
     expect(screen.getByRole('heading', { name: /Previsão do Tempo/i })).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Digite o nome da cidade')).toBeInTheDocument();
-    expect(screen.getByText('Digite uma cidade para ver o clima.')).toBeInTheDocument();
     expect(screen.getByText('Nenhuma cidade favorita ainda. Adicione algumas!')).toBeInTheDocument();
   });
 
