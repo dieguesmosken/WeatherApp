@@ -14,6 +14,8 @@ const MapDisplay = dynamic(() => import('../components/MapDisplay'), {
   loading: () => <p>Loading map...</p>
 });
 
+const weatherCache = {};
+
 export default function Home() {
   const { t, language } = useI18n();
   const [weatherData, setWeatherData] = useState(null);
@@ -30,6 +32,13 @@ export default function Home() {
     setError(null);
     setInfoMessage('');
     // setWeatherData(null); // Keep previous data while new one loads? Or clear? Clearing for now.
+
+    const cacheKey = `${location}-${language}`;
+    if (weatherCache[cacheKey]) {
+      setWeatherData(weatherCache[cacheKey]);
+      return;
+    }
+
     const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric&lang=${language}`;
 
@@ -49,6 +58,7 @@ export default function Home() {
         return;
       }
       const data = await response.json();
+      weatherCache[cacheKey] = data;
       setWeatherData(data);
     } catch (err) {
       console.error("Fetch error:", err);
