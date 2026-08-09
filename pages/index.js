@@ -16,6 +16,7 @@ const MapDisplay = dynamic(() => import('../components/MapDisplay'), {
 
 export default function Home() {
   const { t, language } = useI18n();
+  const [inputValue, setInputValue] = useState('');
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
   const [favorites, setFavorites] = useState([]);
@@ -78,8 +79,7 @@ export default function Home() {
 
   const handleSelectFavorite = (city) => {
     // Trigger a new weather search for the selected favorite city
-    const locationInput = document.querySelector(`.${styles.locationInput}`); // A bit hacky way to set input
-    if(locationInput) locationInput.value = city; // Set input value for visual feedback
+    setInputValue(city);
     handleLocationSubmit(city);
   };
 
@@ -101,7 +101,11 @@ export default function Home() {
           {t('weatherForecaster')}
         </h1>
 
-        <LocationInput onLocationSubmit={handleLocationSubmit} />
+        <LocationInput
+          value={inputValue}
+          onChange={setInputValue}
+          onLocationSubmit={handleLocationSubmit}
+        />
 
         {error && <p className={styles.errorMessage}>{error}</p>}
         {infoMessage && <p className={styles.infoMessage}>{infoMessage}</p>}
