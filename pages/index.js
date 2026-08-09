@@ -107,6 +107,7 @@ export default function Home() {
         {infoMessage && <p className={styles.infoMessage}>{infoMessage}</p>}
 
         <div className={styles.weatherMapContainer}>
+          {!weatherData && <p className={styles.weatherInfo}>{t('enterCityToSeeWeather')}</p>}
           {weatherData && (
             <div className={styles.weatherDisplayWrapper}> {/* Added wrapper for WeatherDisplay */}
               <WeatherDisplay

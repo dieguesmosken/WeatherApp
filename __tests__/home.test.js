@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Home from '../index';
-import { I18nProvider } from '../../lib/i18n/i18nContext'; // Adjusted path
+import Home from '../pages/index';
+import { I18nProvider } from '../lib/i18n/i18nContext'; // Adjusted path
 
 // Mock next/head
 jest.mock('next/head', () => ({ children }) => <>{children}</>);

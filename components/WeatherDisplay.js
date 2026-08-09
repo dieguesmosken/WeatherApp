@@ -23,6 +23,7 @@ export default function WeatherDisplay({ data, onAddToFavorites, isFavorited }) 
 
   if (!data) {
     return <p className={styles.weatherInfo}>{t('enterCityToSeeWeather')}</p>;
+    return null;
   }
 
   if (data.cod && data.cod !== 200) {
