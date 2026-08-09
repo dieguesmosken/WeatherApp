@@ -3,7 +3,7 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   moduleNameMapper: {
     // Handle CSS imports (if you're using them directly in components)
-    '\.(css|[l]ess|scss|sass)$': 'identity-obj-proxy', # Modified "less" to "[l]ess"
+    '\.(css|[l]ess|scss|sass)$': 'identity-obj-proxy', // Modified "less" to "[l]ess"
     // Handle module aliases
     '^@/components/(.*)$': '<rootDir>/components/$1',
     '^@/pages/(.*)$': '<rootDir>/pages/$1',
