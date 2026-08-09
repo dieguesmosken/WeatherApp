@@ -18,6 +18,7 @@
     "react-leaflet": "^4.2.1"
   },
   "devDependencies": {
-    "ignore-loader": "^0.1.2"
+    "ignore-loader": "^0.1.2",
+    "jest-environment-jsdom": "^30.4.1"
   }
 }
