@@ -25,8 +25,7 @@ describe('LocationInput', () => {
 
   it('calls onLocationSubmit with the input value when form is submitted', () => {
     const mockSubmit = jest.fn();
-    renderWithI18n(<LocationInput onLocationSubmit={mockSubmit} />);
-    const input = screen.getByPlaceholderText('Digite o nome da cidade');
+    renderWithI18n(<LocationInput value="Paris" onChange={() => {}} onLocationSubmit={mockSubmit} />);
     const button = screen.getByRole('button', { name: /Buscar Clima/i });
 
     fireEvent.click(button);
@@ -36,16 +35,16 @@ describe('LocationInput', () => {
 
   it('does not call onLocationSubmit if input is empty or only whitespace', () => {
     const mockSubmit = jest.fn();
-    renderWithI18n(<LocationInput onLocationSubmit={mockSubmit} />);
+    renderWithI18n(<LocationInput value="" onChange={() => {}} onLocationSubmit={mockSubmit} />);
     const button = screen.getByRole('button', { name: /Buscar Clima/i });
 
     fireEvent.click(button);
     expect(mockSubmit).not.toHaveBeenCalled();
 
-    // Test with whitespace
-    const input = screen.getByPlaceholderText('Digite o nome da cidade');
-    fireEvent.change(input, { target: { value: '   ' } });
-    fireEvent.click(button);
+    // Re-render with whitespace
+    renderWithI18n(<LocationInput value="   " onChange={() => {}} onLocationSubmit={mockSubmit} />);
+    const button2 = screen.getAllByRole('button', { name: /Buscar Clima/i })[1];
+    fireEvent.click(button2);
     expect(mockSubmit).not.toHaveBeenCalled();
   });
 });

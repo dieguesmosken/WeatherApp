@@ -1,17 +1,8 @@
 .footer {
-  background-color: #333;
-  color: white;
+  background-color: #f1f1f1;
   padding: 1rem;
   text-align: center;
-  /* To ensure it's at the bottom, assuming a flex layout for the page */
-  /* This might need adjustment based on the overall page structure */
-  /* For a simple single-page app, this might be enough or might need body/html height 100% */
-  width: 100%;
-  /* position: absolute; */ /* Uncomment if you want it fixed at the bottom of the viewport */
-  /* bottom: 0; */
-}
-
-.footer p {
-  margin: 0;
   font-size: 0.9rem;
+  color: #666;
+  margin-top: auto;
 }

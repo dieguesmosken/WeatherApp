@@ -1,0 +1,81 @@
+.container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #e6e6e6; /* INMET background */
+}
+
+.title {
+  color: #333;
+  border-left: 5px solid #0056b3; /* INMET blue */
+  padding-left: 10px;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.table th, .table td {
+  border: 1px solid #333;
+  padding: 8px;
+}
+
+.headerRow th {
+  background-color: #0d6efd; /* bright blue for header */
+  color: white;
+  font-weight: bold;
+}
+
+.imageRow td {
+  background-color: black;
+  padding: 0;
+}
+
+/* CSS representations of moon phases */
+.moon {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 10px auto;
+  box-shadow: inset -20px 0 20px rgba(0,0,0,0.5); /* basic spherical feel */
+}
+
+.luaNova {
+  background-color: #222;
+}
+
+.luaCrescente {
+  background-color: #e0e0e0;
+  box-shadow: inset 30px 0 20px rgba(0,0,0,0.9);
+}
+
+.luaCheia {
+  background-color: #f0f0f0;
+}
+
+.luaMinguante {
+  background-color: #e0e0e0;
+  box-shadow: inset -30px 0 20px rgba(0,0,0,0.9);
+}
+
+.alternateRow {
+  background-color: #cce5ff; /* light blue */
+}
+
+.defaultRow {
+  background-color: #e6f2ff; /* lighter blue */
+}
+
+.footerRow {
+  background-color: #0d6efd;
+  color: white;
+  font-size: 0.8rem;
+  text-align: left;
+  padding-left: 1rem;
+}
