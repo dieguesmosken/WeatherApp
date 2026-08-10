@@ -11,7 +11,7 @@ const Header = () => {
         <h1>{t('weatherForecaster')}</h1>
       </div>
       <nav className={styles.nav}>
-        <ul>
+        <ul style={{ display: 'flex', gap: '15px', listStyle: 'none', margin: 0, padding: 0 }}>
           <li>
             <Link href="/">
               {t('home')}
@@ -20,6 +20,16 @@ const Header = () => {
           <li>
             <Link href="/inmet">
               {t('inmetCapitals')}
+            </Link>
+          </li>
+          <li>
+            <Link href="/mapa">
+              Mapa
+            </Link>
+          </li>
+          <li>
+            <Link href="/previsao">
+              Previsão Aberta
             </Link>
           </li>
           <li>
