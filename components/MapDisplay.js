@@ -15,7 +15,7 @@ const MapDisplay = ({ latitude, longitude, zoom }) => {
   const { t } = useI18n();
 
   if (typeof latitude === 'undefined' || typeof longitude === 'undefined') {
-    return <p>Loading map...</p>; // Consider translating this too if it's user-visible for long
+    return <p>{t('loadingMap')}</p>;
   }
 
   const position = [latitude, longitude];
