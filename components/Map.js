@@ -1,15 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
-
-// Fix for default marker icons in Leaflet when using Webpack/Next.js
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-});
+import { initLeaflet } from '../lib/leaflet-init';
 
 const capitalCoordinates = {
   'ARACAJU': [-10.9472, -37.0731],
@@ -42,6 +34,10 @@ const capitalCoordinates = {
 };
 
 const Map = ({ data }) => {
+  useEffect(() => {
+    initLeaflet();
+  }, []);
+
   const center = [-15.7942, -47.8822]; // Center on Brasilia
 
   return (
