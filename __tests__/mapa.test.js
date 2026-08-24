@@ -31,4 +31,30 @@ describe('Mapa Page', () => {
 
     expect(screen.getByText('Mapa Meteorológico - INMET Capitais')).toBeInTheDocument();
   });
+
+  it('renders error message when fetch fails', async () => {
+    // Override the global fetch mock for this specific test
+    global.fetch.mockImplementationOnce(() =>
+      Promise.resolve({
+        ok: false,
+        json: () => Promise.resolve([])
+      })
+    ).mockImplementationOnce(() =>
+      Promise.resolve({
+        ok: false,
+        json: () => Promise.resolve([])
+      })
+    );
+
+    await act(async () => {
+      render(
+        <I18nProvider>
+          <Mapa />
+        </I18nProvider>
+      );
+    });
+
+    // Wait for the error message to appear
+    expect(await screen.findByText('Erro: Failed to fetch INMET data')).toBeInTheDocument();
+  });
 });
