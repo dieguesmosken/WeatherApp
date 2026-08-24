@@ -3,12 +3,16 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet'; // Import Leaflet to fix marker icon issue
 import { useI18n } from '../lib/i18n/i18nContext';
 
+import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
+import iconUrl from 'leaflet/dist/images/marker-icon.png';
+import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
+
 // Fix for default marker icon issue with Webpack
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
-  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+  iconRetinaUrl: iconRetinaUrl.src || iconRetinaUrl,
+  iconUrl: iconUrl.src || iconUrl,
+  shadowUrl: shadowUrl.src || shadowUrl,
 });
 
 const MapDisplay = ({ latitude, longitude, zoom }) => {
