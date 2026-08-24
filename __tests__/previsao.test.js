@@ -35,6 +35,18 @@ describe('Previsao Page', () => {
     expect(screen.getByText('Previsão de 7 Dias (Open-Meteo)')).toBeInTheDocument();
   });
 
+  it('displays an error message when fetch fails', async () => {
+    global.fetch.mockRejectedValueOnce(new Error('API Error Mock'));
+
+    await act(async () => {
+      render(<Previsao />);
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('API Error Mock')).toBeInTheDocument();
+    });
+  });
+
   it('searches and displays forecast data', async () => {
     await act(async () => {
       render(<Previsao />);
