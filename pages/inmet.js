@@ -25,7 +25,7 @@ export default function InmetCapitals() {
         const json = await res.json();
 
         // Handle INMET returning an object instead of array sometimes, or an empty response
-        if (Array.isArray(json)) {
+        if (Array.isArray(json) && json.length > 0) {
             setData(json);
         } else if (json && Object.keys(json).length > 0) {
             // sometimes it returns an object of objects
@@ -42,7 +42,7 @@ export default function InmetCapitals() {
              const yRes = await fetch(`https://apitempo.inmet.gov.br/condicao/capitais/${yDateStr}`);
              if (yRes.ok) {
                  const yJson = await yRes.json();
-                 if (Array.isArray(yJson)) {
+                 if (Array.isArray(yJson) && yJson.length > 0) {
                      setData(yJson);
                  } else if (yJson && Object.keys(yJson).length > 0) {
                      setData(Object.values(yJson));
