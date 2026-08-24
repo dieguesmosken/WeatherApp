@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { useI18n } from '../lib/i18n/i18nContext';
+import { fetchInmetData } from '../lib/api/inmet';
 
 // Dynamically import the map component with SSR disabled
 const MapWithNoSSR = dynamic(() => import('../components/Map'), {
@@ -19,21 +20,7 @@ export default function Mapa() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        // Try today's data first
-        const today = new Date().toISOString().split('T')[0];
-        let res = await fetch(`https://apitempo.inmet.gov.br/condicao/capitais/${today}`);
-
-        // If not successful or empty, try yesterday
-        if (!res.ok || (await res.clone().json()).length === 0) {
-          const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-          res = await fetch(`https://apitempo.inmet.gov.br/condicao/capitais/${yesterday}`);
-        }
-
-        if (!res.ok) {
-          throw new Error('Failed to fetch INMET data');
-        }
-
-        const data = await res.json();
+        const data = await fetchInmetData();
         setInmetData(data);
       } catch (err) {
         setError(err.message);
