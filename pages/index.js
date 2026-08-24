@@ -3,7 +3,6 @@ import styles from '../styles/Home.module.css';
 import dynamic from 'next/dynamic'; // Import dynamic
 import LocationInput from '../components/LocationInput';
 import WeatherDisplay from '../components/WeatherDisplay';
-// import MapDisplay from '../components/MapDisplay'; // Will be dynamically imported
 import FavoritesList from '../components/FavoritesList'; // Import FavoritesList
 import { useState, useEffect } from 'react'; // Import useEffect
 import { useI18n } from '../lib/i18n/i18nContext';
