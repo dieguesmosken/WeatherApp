@@ -38,7 +38,7 @@ export default function WeatherDisplay({ data, onAddToFavorites, isFavorited }) 
   if (data.weather && data.weather[0] && data.weather[0].icon) {
     const iconCode = data.weather[0].icon;
     if (/^[a-zA-Z0-9]+$/.test(iconCode)) {
-      weatherIcon = `http://openweathermap.org/img/wn/${iconCode}@2x.png`;
+      weatherIcon = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
     }
   }
 
