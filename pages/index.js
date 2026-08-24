@@ -19,12 +19,12 @@ export default function Home() {
   const [inputValue, setInputValue] = useState('');
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
-  const [favorites, setFavorites] = useState(new Set());
+  const [favorites, setFavorites] = useState([]);
   const [infoMessage, setInfoMessage] = useState(''); // For messages like "City already favorited"
 
   // Load favorites from localStorage on initial render
   useEffect(() => {
-    setFavorites(new Set(getFavoritesFromStorage()));
+    setFavorites(getFavoritesFromStorage());
   }, []);
 
   const handleLocationSubmit = async (location) => {
@@ -59,22 +59,21 @@ export default function Home() {
 
   const handleAddFavorite = (city) => {
     if (!city || city === t('unknownCity')) return;
-    if (favorites.has(city)) {
+    if (favorites.includes(city)) {
       setInfoMessage(t('cityAlreadyFavorited'));
       setTimeout(() => setInfoMessage(''), 3000); // Clear message after 3s
       return;
     }
-    const newFavorites = new Set(favorites).add(city);
+    const newFavorites = [...favorites, city];
     setFavorites(newFavorites);
-    saveFavoritesToStorage(Array.from(newFavorites));
+    saveFavoritesToStorage(newFavorites);
     setInfoMessage(''); // Clear any previous message
   };
 
   const handleRemoveFavorite = (cityToRemove) => {
-    const newFavorites = new Set(favorites);
-    newFavorites.delete(cityToRemove);
+    const newFavorites = favorites.filter(c => c !== cityToRemove);
     setFavorites(newFavorites);
-    saveFavoritesToStorage(Array.from(newFavorites));
+    saveFavoritesToStorage(newFavorites);
   };
 
   const handleSelectFavorite = (city) => {
@@ -85,7 +84,7 @@ export default function Home() {
 
   const isCityFavorited = (cityName) => {
     if (!weatherData || !weatherData.name) return false;
-    return favorites.has(weatherData.name);
+    return favorites.includes(weatherData.name);
   };
 
   return (
@@ -133,7 +132,7 @@ export default function Home() {
         </div>
 
         <FavoritesList
-          favorites={Array.from(favorites)}
+          favorites={favorites}
           onSelectFavorite={handleSelectFavorite}
           onRemoveFavorite={handleRemoveFavorite}
         />
