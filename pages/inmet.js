@@ -12,45 +12,36 @@ export default function InmetCapitals() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const formatDate = (date) => {
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, '0');
+          const day = String(date.getDate()).padStart(2, '0');
+          return `${year}-${month}-${day}`;
+        };
+
+        const fetchAndNormalize = async (date) => {
+          const res = await fetch(`https://apitempo.inmet.gov.br/condicao/capitais/${formatDate(date)}`);
+          if (!res.ok) return null;
+          const json = await res.json();
+          if (Array.isArray(json) && json.length > 0) return json;
+          if (json && Object.keys(json).length > 0 && !Array.isArray(json)) return Object.values(json);
+          return null; // Handle empty array or empty object cases
+        };
+
         const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        const dateStr = `${year}-${month}-${day}`;
+        let fetchedData = await fetchAndNormalize(today);
 
-        const res = await fetch(`https://apitempo.inmet.gov.br/condicao/capitais/${dateStr}`);
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
+        if (!fetchedData) {
+          const yesterday = new Date(today);
+          yesterday.setDate(yesterday.getDate() - 1);
+          fetchedData = await fetchAndNormalize(yesterday);
         }
-        const json = await res.json();
 
-        // Handle INMET returning an object instead of array sometimes, or an empty response
-        if (Array.isArray(json)) {
-            setData(json);
-        } else if (json && Object.keys(json).length > 0) {
-            // sometimes it returns an object of objects
-            setData(Object.values(json));
-        } else {
-             // Try yesterday if today fails or returns empty
-             const yesterday = new Date(today);
-             yesterday.setDate(yesterday.getDate() - 1);
-             const yYear = yesterday.getFullYear();
-             const yMonth = String(yesterday.getMonth() + 1).padStart(2, '0');
-             const yDay = String(yesterday.getDate()).padStart(2, '0');
-             const yDateStr = `${yYear}-${yMonth}-${yDay}`;
-
-             const yRes = await fetch(`https://apitempo.inmet.gov.br/condicao/capitais/${yDateStr}`);
-             if (yRes.ok) {
-                 const yJson = await yRes.json();
-                 if (Array.isArray(yJson)) {
-                     setData(yJson);
-                 } else if (yJson && Object.keys(yJson).length > 0) {
-                     setData(Object.values(yJson));
-                 }
-             } else {
-                 throw new Error("No data available for today or yesterday");
-             }
+        if (!fetchedData) {
+          throw new Error("No data available for today or yesterday");
         }
+
+        setData(fetchedData);
       } catch (e) {
         console.error("Failed to fetch INMET data", e);
         setError(e.message);
