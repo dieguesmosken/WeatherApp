@@ -31,7 +31,7 @@ export default function Home() {
     setError(null);
     setInfoMessage('');
     const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric&lang=${language}`;
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(location)}&appid=${apiKey}&units=metric&lang=${language}`;
 
     if (!apiKey) {
       setError(t('apiKeyMissing'));
